@@ -50,6 +50,7 @@ var _MAIN = {
         player.scale.x *= -1;
       }
       player.body.velocity.x = -settings.player.speed;
+      player.animations.play("fly", 20, true);
     }
   },
 
@@ -59,6 +60,7 @@ var _MAIN = {
         player.scale.x *= -1;
       }
       player.body.velocity.x = settings.player.speed;
+      player.animations.play("fly", 20, true);
     }
   },
 
@@ -71,6 +73,7 @@ var _MAIN = {
   "stopMoving": function() {
     player.body.velocity.x = 0;
     player.animations.stop();
+    player.animations.play("fly", 20, true);
     // if the user is using two buttons to move, where both pressed, account for that
     if (cursors.left.isDown) {
       this.moveLeft();
@@ -191,6 +194,8 @@ var _MAIN = {
 
     // create the player
     player = game.add.sprite(game.world.width / 2 - 89, game.world.height - 95, "sebastian");
+    player.animations.add("fly");
+    player.animations.play("fly", 20, true);
     game.physics.arcade.enable(player);
     player.body.bounce.y = .2;
     player.body.gravity.y = 300;
