@@ -160,7 +160,7 @@ var _MAIN = {
     game.physics.startSystem(Phaser.Physics.ARCADE);
 
     // main game background
-    //game.add.sprite(0, 0, "background");
+    game.add.sprite(0, 0, "background");
 
     // generate the platform group for ground and edges and such
     platforms = game.add.group();

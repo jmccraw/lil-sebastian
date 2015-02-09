@@ -51,13 +51,13 @@ var launchTheGame = function() {
   theGame.style.display = "block";
   theGame.scrollIntoView();
 };
-if (/\/m\//.test(window.location.href) || window.innerWidth < 800) {
+if (window.innerWidth < 800) {
   gameLauncher = document.getElementById("phaser-mobile-tap");
   gameLauncher.addEventListener("click", launchTheGame, false);
 }
 
 // set up the Phaser game instance
-game = new Phaser.Game(528, 528, Phaser.AUTO, "phaser-screen");
+game = new Phaser.Game(531, 299, Phaser.AUTO, "phaser-screen");
 
 game.state.add("boot", _BOOT);
 game.state.add("load", _LOAD);
