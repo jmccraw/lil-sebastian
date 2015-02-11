@@ -18,6 +18,8 @@ var _MAIN = {
     scoreboard.text = "SCORE: " + settings.global.score;
     this.popUpText("+1000", true, true);
     this.generateCatchPhrase();
+
+    // TODO Make him pee yellow blood stuff when he does catch stuff
   },
 
   "killPlayer": function(player, dodge) {
@@ -44,29 +46,10 @@ var _MAIN = {
     }, 2500);
   },
 
-  "moveLeft": function() {
-    if (!settings.player.killed) {
-      if (player.scale.x > 0) {
-        player.scale.x *= -1;
-      }
-      player.body.velocity.x = -settings.player.speed;
-      player.animations.play("fly", 20, true);
-    }
-  },
-
-  "moveRight": function() {
-    if (!settings.player.killed) {
-      if (player.scale.x < 0) {
-        player.scale.x *= -1;
-      }
-      player.body.velocity.x = settings.player.speed;
-      player.animations.play("fly", 20, true);
-    }
-  },
-
   "jump": function() {
-    if (!settings.player.killed && player.body.touching.down) {
-      player.body.velocity.y = -350;
+    if (!settings.player.killed) {
+      player.body.velocity.y = -200;
+      player.animations.play("fly", 20, true);
     }
   },
 
@@ -162,29 +145,10 @@ var _MAIN = {
     // main game background
     game.add.sprite(0, 0, "background");
 
-    // generate the platform group for ground and edges and such
-    platforms = game.add.group();
-    platforms.enableBody = true;
-
-    // generate the ground
-    var ground = platforms.create(0, game.world.height - 40, "carrot");
-    ground.body.immovable = true;
-
-    // TODO FIXME: generate some ledges, based on data we load in from the levels folder
-    var ledge = platforms.create(400, 400, "ground");
-    ledge.body.immovable = true;
-    ledge = platforms.create(-400, 250, "ground");
-    ledge.body.immovable = true;
-
-    // generate the ladders
-    ladders = game.add.group();
-    ladders.enableBody = true;
-
-    // TODO FIXME: generate the ladders, based on data we load in from the levels folder
-    var ladder = ladders.create(300, game.world.height - 278, "sweetums");
+    background = game.add.tileSprite(0, 0, 528, 299, "background", 10);
 
     // create the scoreboard
-    scoreboard = game.add.text(205, 30,
+    scoreboard = game.add.text(game.world.width - 220, 30,
       "SCORE: " + settings.global.score, {
         "font": "400 15px/1 Arcade-Normal, sans-serif",
         "fill": "#fff",
@@ -193,7 +157,7 @@ var _MAIN = {
     scoreboard.anchor.setTo(0, 0.5);
 
     // create the player
-    player = game.add.sprite(game.world.width / 2 - 89, game.world.height - 95, "sebastian");
+    player = game.add.sprite(20, 0, "sebastian");
     player.animations.add("fly");
     player.animations.play("fly", 20, true);
     game.physics.arcade.enable(player);
@@ -204,26 +168,20 @@ var _MAIN = {
 
     // target inputs
     cursors = game.input.keyboard.createCursorKeys();
-    // move left
-    cursors.left.onDown.add(this.moveLeft, this);
-    cursors.left.onUp.add(this.stopMoving, this);
-    // move right
-    cursors.right.onDown.add(this.moveRight, this);
-    cursors.right.onUp.add(this.stopMoving, this);
     // jump
     cursors.up.onDown.add(this.jump, this);
 
-    game.input.onDown.add(this.testMovement, this);
-    game.input.onUp.add(this.stopMoving, this);
+    game.input.onDown.add(this.jump, this);
   },
 
   "update": function() {
     if (!settings.player.killed) {
       // collision detections
-      game.physics.arcade.collide(player, platforms);
       game.physics.arcade.overlap(player, collectibles, this.addCollectible, null, this);
       game.physics.arcade.overlap(player, dodges, this.killPlayer, null, this);
       game.physics.arcade.overlap(player, bonuses, this.collectBonus, null, this);
+
+      background.tilePosition.x -= 7;
     }
   }
 };

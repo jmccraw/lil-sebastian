@@ -8,7 +8,7 @@ var _BOOT = {
     game.load.image("progress", "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMgAAAAUAQMAAADyauCJAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAADUExURf///6fEG8gAAAAPSURBVCjPY2AYBaOAgQEAAggAATy5/7MAAAAASUVORK5CYII=");
     game.stage.backgroundColor = "#00bcf1";
     // check if on mobile and adjust accordingly
-    if (/\/m\//.test(window.location.href)) {
+    if (window.innerWidth < 600) {
       settings.global.mobile = true;
       // scale to height, but if height would make width too large, base it on width instead
       /*if ((window.innerHeight * (game.width / game.height) > 305) || (window.innerHeight >= 600)) {

@@ -2,10 +2,7 @@
 
 var game;
 var player;
-var platforms;
-var ladders;
-
-
+var background;
 var cursors;
 var collectibles;
 var dodges;
@@ -51,7 +48,7 @@ var launchTheGame = function() {
   theGame.style.display = "block";
   theGame.scrollIntoView();
 };
-if (window.innerWidth < 800) {
+if (window.innerWidth < 600) {
   gameLauncher = document.getElementById("phaser-mobile-tap");
   gameLauncher.addEventListener("click", launchTheGame, false);
 }

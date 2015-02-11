@@ -8,7 +8,7 @@ var _GAMEOVER = {
   "shareScore": {},
   "facebook": {},
   "twitter": {},
-  "tyrion": {},
+  "sebastian": {},
   "gameOver": {},
   "subtext": {},
   "tryAgain": {},
@@ -114,8 +114,8 @@ var _GAMEOVER = {
     // reset player location, if modified
     settings.player.tutorial.modified = false;
     
-    this.tyrion = game.add.sprite(game.world.centerX - 72, game.world.Y - 97, "dead");
-    game.add.tween(this.tyrion).to({"y": 405}, 2000, Phaser.Easing.Bounce.Out, true, 0, 0, false);
+    this.sebastian = game.add.sprite(game.world.centerX - 72, game.world.Y - 97, "dead");
+    game.add.tween(this.sebastian).to({"y": 405}, 2000, Phaser.Easing.Bounce.Out, true, 0, 0, false);
 
     game.add.tween(this.finalScore).to({"alpha": 1}, 500, Phaser.Easing.Linear.None, true, 1000, 0, false);
 
