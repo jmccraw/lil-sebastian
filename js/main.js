@@ -4,6 +4,51 @@
   * The main game state
   */
 var _MAIN = {
+  /**
+   * The text that appears over a character's head
+   * @param{String} text The text to display above head
+   * @param{boolean} bonus Whether this is a bonus catch phrase or hiccup
+   * @param{boolean} shift Whether to shift left or up
+   */
+  "popUpText": function(text, bonus, shift) {
+    var tempLabel;
+    var tempTween;
+    var tempSprite;
+    var tempTween2;
+
+    tempLabel = game.add.text(
+      (!shift ? player.x + (player.width / 2) : player.x + player.width + 10),
+      (!shift ? player.y : player.y + 40),
+      text, {
+        "font": "400 15px/1 Arcade-Normal, sans-serif",
+        "fill": "#fff",
+        "align": "center"
+      });
+    tempLabel.anchor.setTo(0.5, 0.5);
+    tempTween = game.add.tween(tempLabel).to(
+      (!shift ? {"y": tempLabel.y - 20} : {"x": tempLabel.x + player.width + 35, "y": tempLabel.y - 58}),
+      (!shift ? 300 : 600),
+      Phaser.Easing.Linear.None, true, 0, 0, false)
+      .to({"alpha": 0}, 200, Phaser.Easing.Linear.None, true, 0, 0, false);
+    tempTween.onComplete.add(function() {
+      tempLabel.destroy();
+    });
+    // increment how many times user caught something
+    ++settings.global.getCount;
+    // display the hiccup after every fifth drink/bonus caught
+    if ((settings.global.getCount === 5) && !bonus) {
+      settings.global.getCount = 0;
+      var tempSprite;
+      var tempTween2;
+      tempSprite = game.add.sprite(player.x - 30, player.y + 25, "hiccupAlt");
+      tempSprite.anchor.setTo(0.5, 0.5);
+      tempTween2 = game.add.tween(tempSprite).to({"y": tempSprite.y - 15}, 300, Phaser.Easing.Linear.None, true, 0, 0, false)
+        .to({"alpha": 0}, 200, Phaser.Easing.Linear.None, true, 0, 0, false);
+      tempTween2.onComplete.add(function() {
+        tempSprite.kill();
+      });
+    }
+  },
 
   "addCollectible": function(player, collectible) {
     collectible.kill();
@@ -34,11 +79,11 @@ var _MAIN = {
     collectibles.setAll("body.gravity.y", 0);
     dodges.setAll("body.velocity.y", 0);
     dodges.setAll("body.gravity.y", 1);
-    bonuses.setAll("body.velocity.y", 0);
-    bonuses.setAll("body.gravity.y", 0);
-    bonuses.forEach(function(self) {
-      self.animations.stop();
-    });
+    //bonuses.setAll("body.velocity.y", 0);
+    //bonuses.setAll("body.gravity.y", 0);
+    //bonuses.forEach(function(self) {
+    //  self.animations.stop();
+    //});
     game.tweens.pauseAll();
     settings.player.killed = true;
     setTimeout(function() {
@@ -135,6 +180,62 @@ var _MAIN = {
     };
   },
 
+  "initDodgeGroup": function() {
+    dodges = game.add.group();
+    dodges.enableBody = true;
+    // init offset loop
+    game.time.events.loop(500, function() {
+      ++settings.dodge.offset;
+    }, this);
+    // create the dodge
+    this.createDodge();
+    game.time.events.loop(3500 - (settings.dodge.offset / 2), function() {
+      this.createDodge();
+    }, this);
+    // create second dodge
+    game.time.events.loop(2700 - (settings.dodge.offset / 2), function() {
+      this.createDodge();
+    }, this);
+  },
+
+  "initCollectiblesGroup": function() {
+    collectibles = game.add.group();
+    collectibles.enableBody = true;
+    // init offset loop
+    game.time.events.loop(300, function() {
+      ++settings.collectible.offset;
+    }, this);
+    // create the collectible
+    this.createCollectible();
+    game.time.events.loop(1500 - (settings.collectible.offset / 2), function() {
+      this.createCollectible();
+    }, this);
+  },
+
+  "initBonusesGroup": function() {
+    bonuses = game.add.group();
+    bonuses.enableBody = true;
+    // init offset loop
+    game.time.events.loop(1000, function() {
+      ++settings.bonus.offset;
+    }, this);
+    // create the bonus
+    game.time.events.loop(3000 - (settings.bonus.offset / 2), function() {
+      this.createBonus();
+    }, this);
+  },
+
+  "initPlayer": function() {
+    player = game.add.sprite(20, 0, "sebastian");
+    player.animations.add("fly");
+    player.animations.play("fly", 20, true);
+    game.physics.arcade.enable(player);
+    player.body.bounce.y = .2;
+    player.body.gravity.y = 300;
+    player.body.collideWorldBounds = true;
+    player.body.setSize(player.width, player.height, 0, 0);
+  },
+
   "create": function() {
     // stop all the timer loops from generating new objects
     game.time.reset();
@@ -156,21 +257,22 @@ var _MAIN = {
       });
     scoreboard.anchor.setTo(0, 0.5);
 
+    // create the dodge item
+    this.initDodgeGroup();
+
+    // create the collectibles item
+    this.initCollectiblesGroup();
+
+    // create bonus item
+    //this.initBonusesGroup();
+
     // create the player
-    player = game.add.sprite(20, 0, "sebastian");
-    player.animations.add("fly");
-    player.animations.play("fly", 20, true);
-    game.physics.arcade.enable(player);
-    player.body.bounce.y = .2;
-    player.body.gravity.y = 300;
-    player.body.collideWorldBounds = true;
-    player.body.setSize(player.width, player.height, 0, 0);
+    this.initPlayer();
 
     // target inputs
     cursors = game.input.keyboard.createCursorKeys();
     // jump
     cursors.up.onDown.add(this.jump, this);
-
     game.input.onDown.add(this.jump, this);
   },
 
@@ -178,8 +280,8 @@ var _MAIN = {
     if (!settings.player.killed) {
       // collision detections
       game.physics.arcade.overlap(player, collectibles, this.addCollectible, null, this);
-      game.physics.arcade.overlap(player, dodges, this.killPlayer, null, this);
-      game.physics.arcade.overlap(player, bonuses, this.collectBonus, null, this);
+      //game.physics.arcade.overlap(player, dodges, this.killPlayer, null, this);
+      //game.physics.arcade.overlap(player, bonuses, this.collectBonus, null, this);
 
       background.tilePosition.x -= 7;
     }
