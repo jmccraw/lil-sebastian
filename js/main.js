@@ -127,25 +127,29 @@ var _MAIN = {
   },
 
   "createCollectible": function() {
-    var collectible = collectibles.create(game.rnd.integerInRange(30, game.world.width - 30), -47, "collect");
+    var collectible = collectibles.create(game.world.width, game.rnd.integerInRange(0, game.world.height - 67), "collect");
     collectible.outOfBoundsKill = true;
-    collectible.body.velocity.y = 100;
-    collectible.body.gravity.y = settings.collectible.speed + settings.collectible.offset;
+    collectible.body.velocity.x = -settings.collectible.speed + settings.collectible.offset;
+    collectible.body.gravity.y = 0;
+    collectible.anchor.set(.5,.5);
+    game.add.tween(collectible).to({"angle": -360}, 2000).loop().start();
   },
 
   "createDodge": function() {
-    var dodge = dodges.create(game.rnd.integerInRange(30, game.world.width - 60), -60, "dodge");
+    var dodge = dodges.create(game.world.width, game.rnd.integerInRange(0, game.world.height - 100), "dodge");
+    var dodgeAngle = Math.ceil(Math.random() * 10) % 2 === 0;
     dodge.outOfBoundsKill = true;
-    dodge.body.gravity.y = settings.dodge.speed + settings.dodge.offset;
+    dodge.body.velocity.x = -settings.dodge.speed + settings.dodge.offset;
+    dodge.body.gravity.y = 0;
     dodge.body.setSize(dodge.width, 10, 0, 0);
-    dodge.anchor.setTo(0.66, 0.3);
-    game.add.tween(dodge).to({"angle": 360}, 2000).loop().start();
+    game.add.tween(dodge).to({"angle": dodgeAngle ? -45 : 45}, 2000).to({"angle": dodgeAngle ? 45 : -45}, 2000).loop().start();
   },
 
   "createBonus": function() {
-    var chalice = bonuses.create(game.rnd.integerInRange(30, game.world.width - 30), -75, "bonus");
+    var chalice = bonuses.create(game.world.width, game.rnd.integerInRange(0, game.world.height - 30), "bonus");
     chalice.outOfBoundsKill = true;
-    chalice.body.gravity.y = settings.bonus.speed + settings.bonus.offset;
+    chalice.body.velocity.x = -settings.bonus.speed + settings.bonus.offset;
+    chalice.body.gravity.y = 0;
     chalice.anchor.setTo(0.5, 0.5);
     chalice.animations.add("bubble");
     chalice.animations.play("bubble", 5, true);
@@ -189,9 +193,9 @@ var _MAIN = {
     }, this);
     // create the dodge
     this.createDodge();
-    game.time.events.loop(3500 - (settings.dodge.offset / 2), function() {
-      this.createDodge();
-    }, this);
+    //game.time.events.loop(3500 - (settings.dodge.offset / 2), function() {
+    //  this.createDodge();
+    //}, this);
     // create second dodge
     game.time.events.loop(2700 - (settings.dodge.offset / 2), function() {
       this.createDodge();
@@ -231,7 +235,7 @@ var _MAIN = {
     player.animations.play("fly", 20, true);
     game.physics.arcade.enable(player);
     player.body.bounce.y = .2;
-    player.body.gravity.y = 300;
+    player.body.gravity.y = 400;
     player.body.collideWorldBounds = true;
     player.body.setSize(player.width, player.height, 0, 0);
   },
