@@ -238,7 +238,7 @@ var _MAIN = {
     player.animations.play("fly", 20, true);
     game.physics.arcade.enable(player);
     player.body.bounce.y = .2;
-    player.body.gravity.y = 400;
+    player.body.gravity.y = 500;
     player.body.collideWorldBounds = true;
     player.body.setSize(player.width, player.height, 0, 0);
   },
