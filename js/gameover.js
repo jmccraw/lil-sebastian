@@ -41,7 +41,7 @@ var _GAMEOVER = {
     // Omniture custom tracking
     //G.readOmnitureOnPageView(this, "38", window.location.href + " Facebook Customized Share");
     // Google Analytics Event tracking
-    //_gaq.push(["_trackEvent", "Vulture, Video Game", "Game of Thrones", "Facebook Share"]);
+    //ga("send", "event", "Vulture, Video Game", "Lil Sebastian", "Facebook Share");
   },
 
   "shareToTwitter": function() {
@@ -61,7 +61,7 @@ var _GAMEOVER = {
     // Omniture custom tracking
     //G.readOmnitureOnPageView(this, "39", window.location.href + " Twitter Customized Share");
     // Google Analytics Event tracking
-    //_gaq.push(["_trackEvent", "Vulture, Video Game", "Game of Thrones", "Twitter Share"]);
+    //ga("send", "event", "Vulture, Video Game", "Lil Sebastian", "Twitter Share");
   },
 
   "restartGame": function() {
@@ -75,7 +75,7 @@ var _GAMEOVER = {
   "restartGameTap": function(tap) {
     if (!tap.targetObject) {
       console.log("_trackEvent", "Vulture, Video Game", "Game of Thrones", "Restart Game, Tap");
-      // _gaq.push(["_trackEvent", "Vulture, Video Game", "Game of Thrones", "Restart Game, Tap"]);
+      // ga("send", "event", "Vulture, Video Game", "Lil Sebastian", "Restart Game, Tap");
       game.state.start("main");
     }
   },
@@ -138,6 +138,6 @@ var _GAMEOVER = {
 
     // send score to Google Analytics
     console.log("_trackEvent", "Vulture, Video Game", "Game of Thrones", "Score: " + settings.global.score);
-    // _gaq.push(["_trackEvent", "Vulture, Video Game", "Game of Thrones", "Score: " + settings.global.score]);
+    // ga("send", "event", "Vulture, Video Game", "Game of Thrones", "Score: " + settings.global.score);
   }
 };

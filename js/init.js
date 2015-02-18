@@ -2,6 +2,7 @@
 
 var game;
 var player;
+var sign;
 var background;
 var cursors;
 var collectibles;
@@ -37,6 +38,10 @@ var settings = {
   "bonus": {
     "speed": 400,
     "offset": 1
+  },
+  "sign": {
+    "initiated": false,
+    "isDead": false
   }
 };
 

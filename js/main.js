@@ -38,7 +38,7 @@ var _MAIN = {
     // display the hiccup after every fifth drink/bonus caught
     if ((settings.global.getCount === 5) && !bonus) {
       settings.global.getCount = 0;
-      var tempSprite;
+      /*var tempSprite;
       var tempTween2;
       tempSprite = game.add.sprite(player.x - 30, player.y + 25, "hiccupAlt");
       tempSprite.anchor.setTo(0.5, 0.5);
@@ -46,8 +46,16 @@ var _MAIN = {
         .to({"alpha": 0}, 200, Phaser.Easing.Linear.None, true, 0, 0, false);
       tempTween2.onComplete.add(function() {
         tempSprite.kill();
-      });
+      });*/
+      this.generateHappyPee();
     }
+  },
+
+  "generateHappyPee": function() {
+    var pee = game.add.emitter(player.x + (player.width / 2), player.y + player.height - 5, 200);
+    pee.makeParticles("pee");
+    pee.setScale(.1, .8, .1, .7, 500, Phaser.Easing.Linear.None, false);
+    pee.explode(800, 15);
   },
 
   "addCollectible": function(player, collectible) {
@@ -62,9 +70,7 @@ var _MAIN = {
     settings.global.score += 1000;
     scoreboard.text = "SCORE: " + settings.global.score;
     this.popUpText("+1000", true, true);
-    this.generateCatchPhrase();
-
-    // TODO Make him pee yellow blood stuff when he does catch stuff
+    this.generateHappyPee(player);
   },
 
   "killPlayer": function(player, dodge) {
@@ -75,12 +81,9 @@ var _MAIN = {
     blood.start(false, 800, 30);
     player.body.velocity.x = 0;
     player.animations.stop();
-    collectibles.setAll("body.velocity.y", 0);
-    collectibles.setAll("body.gravity.y", 0);
-    dodges.setAll("body.velocity.y", 0);
-    dodges.setAll("body.gravity.y", 1);
-    //bonuses.setAll("body.velocity.y", 0);
-    //bonuses.setAll("body.gravity.y", 0);
+    collectibles.setAll("body.velocity.x", 0);
+    dodges.setAll("body.velocity.x", 0);
+    //bonuses.setAll("body.velocity.x", 0);
     //bonuses.forEach(function(self) {
     //  self.animations.stop();
     //});
@@ -183,6 +186,10 @@ var _MAIN = {
       "bonus": {
         "speed": 400,
         "offset": 1
+      },
+      "sign": {
+        "initiated": false,
+        "isDead": false
       }
     };
   },
@@ -200,6 +207,7 @@ var _MAIN = {
     //  this.createDodge();
     //}, this);
     // create second dodge
+    // TODO FIXME Make this better, loop should iterate faster, not this one-time instantiation stuff
     game.time.events.loop(2700 - (settings.dodge.offset / 2), function() {
       this.createDodge();
     }, this);
@@ -243,6 +251,10 @@ var _MAIN = {
     player.body.setSize(player.width, player.height, 0, 0);
   },
 
+  "initWelcomeSign": function() {
+    sign = game.add.sprite(game.width - 50, game.world.height - 118, "sign");
+  },
+
   "create": function() {
     // stop all the timer loops from generating new objects
     game.time.reset();
@@ -264,14 +276,8 @@ var _MAIN = {
       });
     scoreboard.anchor.setTo(0, 0.5);
 
-    // create the dodge item
-    this.initDodgeGroup();
-
-    // create the collectibles item
-    this.initCollectiblesGroup();
-
-    // create bonus item
-    //this.initBonusesGroup();
+    // create welcome sign
+    this.initWelcomeSign();
 
     // create the player
     this.initPlayer();
@@ -291,6 +297,27 @@ var _MAIN = {
       //game.physics.arcade.overlap(player, bonuses, this.collectBonus, null, this);
 
       background.tilePosition.x -= 7;
+      if (sign.x < game.world.width / 4 && !settings.sign.initiated) {
+        settings.sign.initiated = true;
+
+        // create the dodge item
+        this.initDodgeGroup();
+
+        // create the collectibles item
+        this.initCollectiblesGroup();
+
+        // create bonus item
+        //this.initBonusesGroup();
+
+        player.bringToTop();
+      }
+      if (sign.x > -219) {
+        sign.x -= 4;
+      }
+      else if (!settings.sign.isDead) {
+        settings.sign.isDead = true;
+        sign.kill();
+      }
     }
   }
 };
