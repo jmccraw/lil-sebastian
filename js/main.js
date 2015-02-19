@@ -33,22 +33,20 @@ var _MAIN = {
     tempTween.onComplete.add(function() {
       tempLabel.destroy();
     });
-    // increment how many times user caught something
-    ++settings.global.getCount;
-    // display the hiccup after every fifth drink/bonus caught
-    if ((settings.global.getCount === 5) && !bonus) {
-      settings.global.getCount = 0;
-      /*var tempSprite;
-      var tempTween2;
-      tempSprite = game.add.sprite(player.x - 30, player.y + 25, "hiccupAlt");
-      tempSprite.anchor.setTo(.5, .5);
-      tempTween2 = game.add.tween(tempSprite).to({"y": tempSprite.y - 15}, 300, Phaser.Easing.Linear.None, true, 0, 0, false)
-        .to({"alpha": 0}, 200, Phaser.Easing.Linear.None, true, 0, 0, false);
-      tempTween2.onComplete.add(function() {
-        tempSprite.kill();
-      });*/
-      this.generateHappyPee();
-    }
+    //++settings.global.getCount;
+    //// display the hiccup after every fifth drink/bonus caught
+    //if ((settings.global.getCount === 5) && !bonus) {
+    //  settings.global.getCount = 0;
+    //  /*var tempSprite;
+    //  var tempTween2;
+    //  tempSprite = game.add.sprite(player.x - 30, player.y + 25, "hiccupAlt");
+    //  tempSprite.anchor.setTo(.5, .5);
+    //  tempTween2 = game.add.tween(tempSprite).to({"y": tempSprite.y - 15}, 300, Phaser.Easing.Linear.None, true, 0, 0, false)
+    //    .to({"alpha": 0}, 200, Phaser.Easing.Linear.None, true, 0, 0, false);
+    //  tempTween2.onComplete.add(function() {
+    //    tempSprite.destroy();
+    //  });*/
+    //}
   },
 
   "generateHappyPee": function() {
@@ -59,14 +57,28 @@ var _MAIN = {
   },
 
   "addCollectible": function(player, collectible) {
-    collectible.kill();
-    settings.global.score += 100;
+    var score;
+    // increment how many times user caught something
+    ++settings.global.getCount;
+    if (settings.global.getCount >= 5) {
+      score = 500;
+      settings.global.getCount = 0;
+      this.generateHappyPee();
+    }
+    else {
+      score = 100;
+    }
+    console.log("SCORE", score, "getCount", settings.global.getCount);
+    collectible.destroy();
+    settings.global.score += score;
     scoreboard.text = "SCORE: " + settings.global.score;
-    this.popUpText(settings.global.getCount === 5 ? "+500" : "+100", false, false);
+    this.popUpText("+" + score, false, false);
   },
 
   "collectBonus": function(player, chalice) {
-    chalice.kill();
+    chalice.destroy();
+    // increment how many times user caught something
+    ++settings.global.getCount;
     settings.global.score += 1000;
     scoreboard.text = "SCORE: " + settings.global.score;
     this.popUpText("+1000", true, true);
@@ -130,7 +142,7 @@ var _MAIN = {
   },
 
   "createCollectible": function() {
-    var collectible = collectibles.create(game.world.width, game.rnd.integerInRange(0, game.world.height - 67), "collect");
+    var collectible = collectibles.create(game.world.width, game.rnd.integerInRange(0, game.world.height - 90), "collect");
     var dodgeAngle = Math.ceil(Math.random() * 10) % 2 === 0;
     collectible.outOfBoundsKill = true;
     collectible.body.velocity.x = -1 * (settings.collectible.speed + settings.collectible.offset);
@@ -147,12 +159,12 @@ var _MAIN = {
     dodge.body.velocity.x = -1 * (settings.dodge.speed + settings.dodge.offset);
     dodge.body.gravity.y = 0;
     dodge.scale.setTo(.75, .75);
-    dodge.body.setSize(dodge.width, 10, 0, 0);
+    dodge.body.setSize(dodge.width - 4, dodge.height - 25, 2, 25);
     game.add.tween(dodge).to({"angle": dodgeAngle ? -5 : 5}, 1000).to({"angle": dodgeAngle ? 5 : -5}, 1000).to({"angle": 0}, 1000).loop().start();
   },
 
   "createBonus": function() {
-    var chalice = bonuses.create(game.world.width, game.rnd.integerInRange(0, game.world.height - 30), "bonus");
+    var chalice = bonuses.create(game.world.width, game.rnd.integerInRange(0, game.world.height - 40), "bonus");
     chalice.outOfBoundsKill = true;
     chalice.body.velocity.x = -1 * (settings.bonus.speed + settings.bonus.offset);
     chalice.body.gravity.y = 0;
@@ -246,7 +258,7 @@ var _MAIN = {
     player.animations.play("fly", 20, true);
     game.physics.arcade.enable(player);
     player.body.bounce.y = .2;
-    player.body.gravity.y = 500;
+    player.body.gravity.y = 600;
     player.body.collideWorldBounds = true;
     player.body.setSize(player.width, player.height, 0, 0);
   },
@@ -293,8 +305,17 @@ var _MAIN = {
     if (!settings.player.killed) {
       // collision detections
       game.physics.arcade.overlap(player, collectibles, this.addCollectible, null, this);
-      //game.physics.arcade.overlap(player, dodges, this.killPlayer, null, this);
-      //game.physics.arcade.overlap(player, bonuses, this.collectBonus, null, this);
+      game.physics.arcade.overlap(player, dodges, this.killPlayer, null, this);
+      game.physics.arcade.overlap(player, bonuses, this.collectBonus, null, this);
+
+      //// clean up objects that fall off screen
+      //if (settings.sign.initiated) {
+      //  collectibles.forEach(function (collectible) {
+      //    if (collectible.x < 0) {
+      //      collectible.destroy();
+      //    }
+      //  });
+      //}
 
       background.tilePosition.x -= 7;
       if (sign.x < game.world.width / 4 && !settings.sign.initiated) {
@@ -307,7 +328,7 @@ var _MAIN = {
         this.initCollectiblesGroup();
 
         // create bonus item
-        //this.initBonusesGroup();
+        this.initBonusesGroup();
 
         player.bringToTop();
       }
@@ -316,7 +337,7 @@ var _MAIN = {
       }
       else if (!settings.sign.isDead) {
         settings.sign.isDead = true;
-        sign.kill();
+        sign.destroy();
       }
     }
   }
