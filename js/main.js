@@ -24,7 +24,7 @@ var _MAIN = {
         "fill": "#fff",
         "align": "center"
       });
-    tempLabel.anchor.setTo(0.5, 0.5);
+    tempLabel.anchor.setTo(.5, .5);
     tempTween = game.add.tween(tempLabel).to(
       (!shift ? {"y": tempLabel.y - 20} : {"x": tempLabel.x + player.width + 35, "y": tempLabel.y - 58}),
       (!shift ? 300 : 600),
@@ -41,7 +41,7 @@ var _MAIN = {
       /*var tempSprite;
       var tempTween2;
       tempSprite = game.add.sprite(player.x - 30, player.y + 25, "hiccupAlt");
-      tempSprite.anchor.setTo(0.5, 0.5);
+      tempSprite.anchor.setTo(.5, .5);
       tempTween2 = game.add.tween(tempSprite).to({"y": tempSprite.y - 15}, 300, Phaser.Easing.Linear.None, true, 0, 0, false)
         .to({"alpha": 0}, 200, Phaser.Easing.Linear.None, true, 0, 0, false);
       tempTween2.onComplete.add(function() {
@@ -62,7 +62,7 @@ var _MAIN = {
     collectible.kill();
     settings.global.score += 100;
     scoreboard.text = "SCORE: " + settings.global.score;
-    this.popUpText("+100", false, false);
+    this.popUpText(settings.global.getCount === 5 ? "+500" : "+100", false, false);
   },
 
   "collectBonus": function(player, chalice) {
@@ -156,7 +156,7 @@ var _MAIN = {
     chalice.outOfBoundsKill = true;
     chalice.body.velocity.x = -1 * (settings.bonus.speed + settings.bonus.offset);
     chalice.body.gravity.y = 0;
-    chalice.anchor.setTo(0.5, 0.5);
+    chalice.anchor.setTo(.5, .5);
     chalice.animations.add("bubble");
     chalice.animations.play("bubble", 5, true);
   },
@@ -274,7 +274,7 @@ var _MAIN = {
         "fill": "#fff",
         "align": "right"
       });
-    scoreboard.anchor.setTo(0, 0.5);
+    scoreboard.anchor.setTo(0, .5);
 
     // create welcome sign
     this.initWelcomeSign();

@@ -59,7 +59,32 @@ if (window.innerWidth < 600) {
 }
 
 // set up the Phaser game instance
-game = new Phaser.Game(531, 299, Phaser.AUTO, "phaser-screen");
+// check if on mobile and adjust accordingly
+if (window.innerWidth < 600) {
+  settings.global.mobile = true;
+  // scale to height, but if height would make width too large, base it on width instead
+  /*if ((window.innerHeight * (game.width / game.height) > 305) || (window.innerHeight >= 600)) {
+   game.scale.maxWidth = 305;
+   game.scale.maxHeight = game.scale.maxWidth * (game.height / game.width);
+   }
+   // else, scaled based on height
+   else {
+   game.scale.maxHeight = window.innerHeight;
+   game.scale.maxWidth = game.scale.maxHeight * (game.width / game.height);
+   }*/
+  //game.scale.setSize();
+
+  game = new Phaser.Game(Math.ceil(window.innerWidth) - 20, Math.ceil(window.innerHeight) - 50, Phaser.AUTO, "phaser-screen");
+  //game.scale.maxWidth = window.innerWidth - 20;
+  //game.scale.maxHeight = window.innerHeight;
+  //game.scale.setSize();
+
+  console.log("send", "event", "Vulture, Video Game", "Lil Sebastian", "Mobile");
+  // ga("send", "event", "Vulture, Video Game", "Lil Sebastian", "Mobile");
+}
+else {
+  game = new Phaser.Game(531, 299, Phaser.AUTO, "phaser-screen");
+}
 
 game.state.add("boot", _BOOT);
 game.state.add("load", _LOAD);
