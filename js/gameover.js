@@ -35,7 +35,7 @@ var _GAMEOVER = {
       "picture": "http://pixel.nymag.com/content/dam/daily/vulture/2014/05/15/15-game-of-thrones.jpg",
       "name": "“Parks and Recreation” The Li'l Sebastian Retro Game",
       "caption": " ",
-      "description": "I ate " + settings.global.score + " carrots of wine in Vulture's retro “Parks and Recreation” game."
+      "description": "I scored " + settings.global.score + " in Vulture's retro “Parks and Recreation” game."
     }, function(response){});
 
     // Omniture custom tracking
@@ -47,14 +47,14 @@ var _GAMEOVER = {
   "shareToTwitter": function() {
     // try to launch native app
     if (settings.global.mobile) {
-      window.location.href = "twitter://post?message=" + encodeURIComponent("I ate " + settings.global.score +
-        " carrots in @Vulture's @parksandrecnbc #retrograme! #BeatThat " + window.location.href);
+      window.location.href = "twitter://post?message=" + encodeURIComponent("I scored " + settings.global.score +
+        " in @Vulture's @ParksAndRecNBC #retrogame! #BeatThat " + window.location.href);
     }
     // otherwise, do it the standard way
     setTimeout(function() {
       window.open("http://twitter.com/intent/tweet" +
-        "?source=tweetbutton&text=" + encodeURIComponent("I ate " + settings.global.score +
-        " carrots in @Vulture's @parksandrecnbc #retrograme! #BeatThat") + "+" + encodeURIComponent(window.location.href), "Tweet Your Score",
+        "?source=tweetbutton&text=" + encodeURIComponent("I scored " + settings.global.score +
+        " in @Vulture's @ParksAndRecNBC #retrogame! #BeatThat") + "+" + encodeURIComponent(window.location.href), "Tweet Your Score",
         "width=600,height=300,left=" + Math.ceil((window.innerWidth / 2) - 300) + ",top=" + Math.ceil((window.innerHeight / 2) - 127));
     }, 100);
 
