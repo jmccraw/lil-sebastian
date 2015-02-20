@@ -131,7 +131,7 @@ var _GAMEOVER = {
     }
     else {
       this.sebastian = game.add.sprite(game.world.centerX - 39, -100, "sebastian");
-      game.add.tween(this.sebastian).to({"y": game.world.height - 180}, 2000, Phaser.Easing.Bounce.Out, true, 0, 0, false);
+      game.add.tween(this.sebastian).to({"y": game.world.height * .654}, 2000, Phaser.Easing.Bounce.Out, true, 0, 0, false);
     }
 
     game.add.tween(this.finalScore).to({"alpha": 1}, 500, Phaser.Easing.Linear.None, true, 1000, 0, false);

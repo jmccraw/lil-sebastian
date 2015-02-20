@@ -17,7 +17,6 @@ var _START = {
     }
     else {
       startScreen = game.add.sprite(0, 0, "startScreenMobile");
-      startScreen.anchor.setTo(.01, -.28);
       startScreen.scale.setTo(.5, .5);
     }
 
