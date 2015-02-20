@@ -84,6 +84,7 @@ if (window.innerWidth < 600) {
 }
 else {
   game = new Phaser.Game(531, 299, Phaser.AUTO, "phaser-screen");
+  document.getElementById("phaser-loading").style.display = "none";
 }
 
 game.state.add("boot", _BOOT);

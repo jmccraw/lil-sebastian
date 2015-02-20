@@ -90,8 +90,6 @@ var _MAIN = {
     player.body.velocity.y = 0;
     player.body.gravity.y = 0;
     player.animations.stop();
-    player.anchor.set(.5, 1);
-    game.add.tween(player).to({"angle": 180, "x": player.x + 50}, 200).start();
     collectibles.setAll("body.velocity.x", 0);
     dodges.setAll("body.velocity.x", 0);
     bonuses.setAll("body.velocity.x", 0);
@@ -99,7 +97,7 @@ var _MAIN = {
     settings.player.killed = true;
     setTimeout(function() {
       game.state.start("gameover");
-    }, 1500);
+    }, 800);
   },
 
   "jump": function() {

@@ -11,6 +11,13 @@ var _START = {
   },
 
   "create": function() {
+    if (!settings.global.mobile) {
+      game.add.sprite(0, 0, "startScreen");
+    }
+    else {
+      game.add.sprite(0, 0, "startScreenMobile");
+    }
+
     var key = game.input.keyboard.createCursorKeys();
     key.up.onDown.add(this.gamePress, this);
     game.input.onDown.add(this.gamePress, this);

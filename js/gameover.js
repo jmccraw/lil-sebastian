@@ -74,7 +74,7 @@ var _GAMEOVER = {
 
   "restartGameTap": function(tap) {
     if (!tap.targetObject) {
-      console.log("_trackEvent", "Vulture, Video Game", "Game of Thrones", "Restart Game, Tap");
+      console.log("_trackEvent", "Vulture, Video Game", "Lil Sebastian", "Restart Game, Tap");
       // ga("send", "event", "Vulture, Video Game", "Lil Sebastian", "Restart Game, Tap");
       game.state.start("main");
     }
@@ -82,40 +82,57 @@ var _GAMEOVER = {
 
   "preload": function() {
     this.finalScore = game.add.text(game.world.centerX, 35, "SCORE " + settings.global.score, this.bigText);
-    this.finalScore.anchor.setTo(0.5, 0.5);
+    this.finalScore.anchor.setTo(.5, .5);
     this.finalScore.alpha = 0;
 
     this.shareScore = game.add.text(game.world.centerX, 70, "SHARE YOUR SCORE:", this.mediumText);
-    this.shareScore.anchor.setTo(0.5, 0.5);
+    this.shareScore.anchor.setTo(.5, .5);
     this.shareScore.alpha = 0;
-    this.facebook = game.add.button(40, 90, "facebook", this.shareToFacebook, this);
+    if (!settings.global.mobile) {
+      this.facebook = game.add.button(90, 90, "facebook", this.shareToFacebook, this);
+      this.twitter = game.add.button(290, 90, "twitter", this.shareToTwitter, this);
+    }
+    else {
+      this.facebook = game.add.button(game.world.centerX - 77, 110, "facebook", this.shareToFacebook, this);
+      this.twitter = game.add.button(game.world.centerX - 77, 170, "twitter", this.shareToTwitter, this);
+    }
     this.facebook.alpha = 0;
-    this.twitter = game.add.button(340, 90, "twitter", this.shareToTwitter, this);
     this.twitter.alpha = 0;
 
     this.gameOver = game.add.text(game.world.centerX, game.world.centerY + 10, "GAME OVER", this.bigText);
-    this.gameOver.anchor.setTo(0.5, 0.5);
+    this.gameOver.anchor.setTo(.5, .5);
     this.gameOver.alpha = 0;
-    this.subtext = game.add.text(165, game.world.centerY + 50, "R.I.P. Li'l Sebastian", this.smallText);
-    this.subtext.anchor.setTo(0.5, 0.5);
-    this.subtext.alpha = 0;
-
-    if (settings.global.mobile) {
-      this.tryAgain = game.add.text(game.world.centerX, game.world.height - 65, "TRY AGAIN", this.mediumText);
+    if (!settings.global.mobile) {
+      this.subtext = game.add.text(185, game.world.centerY + 50, "Bye Bye, Li'l Sebastian", this.smallText);
     }
     else {
+      this.subtext = game.add.text(game.world.centerX, game.world.centerY + 50, "Bye Bye,\nLi'l Sebastian", this.smallText);
+    }
+    this.subtext.anchor.setTo(.5, .5);
+    this.subtext.alpha = 0;
+
+    if (!settings.global.mobile) {
       this.tryAgain = game.add.sprite(160, game.world.height - 65, "tryAgain");
     }
-    this.tryAgain.anchor.setTo(0.5, 0.5);
+    else {
+      this.tryAgain = game.add.text(game.world.centerX, game.world.height - 65, "TRY AGAIN", this.mediumText);
+    }
+    this.tryAgain.anchor.setTo(.5, .5);
     this.tryAgain.alpha = 0;
   },
 
   "create": function() {
     // reset player location, if modified
     settings.player.tutorial.modified = false;
-    
-    this.sebastian = game.add.sprite(game.world.width - 70, game.world.Y - 95, "sebastian");
-    game.add.tween(this.sebastian).to({"angle": 180}, 10).to({"y": game.world.height - 30}, 2000, Phaser.Easing.Bounce.Out, true, 0, 0, false);
+
+    if (!settings.global.mobile) {
+      this.sebastian = game.add.sprite(game.world.width - 130, -100, "sebastian");
+      game.add.tween(this.sebastian).to({"y": game.world.height - 120}, 2000, Phaser.Easing.Bounce.Out, true, 0, 0, false);
+    }
+    else {
+      this.sebastian = game.add.sprite(game.world.centerX - 39, -100, "sebastian");
+      game.add.tween(this.sebastian).to({"y": game.world.height - 180}, 2000, Phaser.Easing.Bounce.Out, true, 0, 0, false);
+    }
 
     game.add.tween(this.finalScore).to({"alpha": 1}, 500, Phaser.Easing.Linear.None, true, 1000, 0, false);
 
@@ -137,7 +154,7 @@ var _GAMEOVER = {
     game.input.onUp.add(this.restartGameTap, this);
 
     // send score to Google Analytics
-    console.log("_trackEvent", "Vulture, Video Game", "Game of Thrones", "Score: " + settings.global.score);
-    // ga("send", "event", "Vulture, Video Game", "Game of Thrones", "Score: " + settings.global.score);
+    console.log("_trackEvent", "Vulture, Video Game", "Lil Sebastian", "Score: " + settings.global.score);
+    // ga("send", "event", "Vulture, Video Game", "Lil Sebastian", "Score: " + settings.global.score);
   }
 };

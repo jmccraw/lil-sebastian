@@ -32,6 +32,13 @@
       display: none;
     }
 
+    #phaser-loading {
+      color: #00bcf1;
+      display: block;
+      font: 700 1.8rem/1 "Arcade-Normal", Arial, sans-serif;
+      text-align: center;
+    }
+
     #phaser-screen {
       margin: 0 auto 30px;
       width: 100%;
@@ -46,13 +53,18 @@
         height: auto;
       }
 
+      #phaser-loading {
+        display: none;
+      }
+
       #phaser-screen {
         display: none;
       }
     }
   </style>
 
-  <img id="phaser-mobile-tap" src="http://pixel.nymag.com/content/dam/daily/other/2014/05/21/launchTheGame.png" alt="Launch the Game" />
+  <img id="phaser-mobile-tap" src="http://pixel.nymag.com/content/dam/daily/other/2015/02/20/launchthegamemobile.jpg" alt="Launch the Game" />
+  <span id="phaser-loading">LOADING…</span>
   <article id="phaser-screen"></article>
 
   <script src="js/phaser.min.js"></script>
