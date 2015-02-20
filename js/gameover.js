@@ -93,8 +93,8 @@ var _GAMEOVER = {
       this.twitter = game.add.button(290, 90, "twitter", this.shareToTwitter, this);
     }
     else {
-      this.facebook = game.add.button(game.world.centerX - 77, 110, "facebook", this.shareToFacebook, this);
-      this.twitter = game.add.button(game.world.centerX - 77, 170, "twitter", this.shareToTwitter, this);
+      this.facebook = game.add.button(game.world.centerX - 77, 90, "facebook", this.shareToFacebook, this);
+      this.twitter = game.add.button(game.world.centerX - 77, 150, "twitter", this.shareToTwitter, this);
     }
     this.facebook.alpha = 0;
     this.twitter.alpha = 0;
@@ -115,7 +115,7 @@ var _GAMEOVER = {
       this.tryAgain = game.add.sprite(160, game.world.height - 65, "tryAgain");
     }
     else {
-      this.tryAgain = game.add.text(game.world.centerX, game.world.height - 65, "TRY AGAIN", this.mediumText);
+      this.tryAgain = game.add.text(game.world.centerX, game.world.height * .8519, "TRY AGAIN", this.mediumText);
     }
     this.tryAgain.anchor.setTo(.5, .5);
     this.tryAgain.alpha = 0;
