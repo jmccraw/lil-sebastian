@@ -115,7 +115,7 @@ var _GAMEOVER = {
       this.tryAgain = game.add.sprite(160, game.world.height - 65, "tryAgain");
     }
     else {
-      this.tryAgain = game.add.text(game.world.centerX, game.world.height * .8519, "TRY AGAIN", this.mediumText);
+      this.tryAgain = game.add.text(game.world.centerX, game.world.height * .87, "TRY AGAIN", this.mediumText);
     }
     this.tryAgain.anchor.setTo(.5, .5);
     this.tryAgain.alpha = 0;
