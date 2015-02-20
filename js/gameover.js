@@ -13,12 +13,12 @@ var _GAMEOVER = {
   "subtext": {},
   "tryAgain": {},
   "bigText": {
-    "font": "400 27px/1.5 Arcade-Normal, Arial, sans-serif",
+    "font": "400 22px/1.5 Arcade-Normal, Arial, sans-serif",
     "fill": "#fff",
     "align": "center"
   },
   "mediumText": {
-    "font": "400 20px/1.5 Arcade-Normal, Arial, sans-serif",
+    "font": "400 16px/1.5 Arcade-Normal, Arial, sans-serif",
     "fill": "#fff",
     "align": "center"
   },
@@ -33,9 +33,9 @@ var _GAMEOVER = {
       "method": "feed",
       "link": window.location.href,
       "picture": "http://pixel.nymag.com/content/dam/daily/vulture/2014/05/15/15-game-of-thrones.jpg",
-      "name": "“Game of Thrones” The Retro Game",
+      "name": "“Parks and Recreation” The Li'l Sebastian Retro Game",
       "caption": " ",
-      "description": "I drank " + settings.global.score + " glasses of wine in Vulture's retro “Game of Thrones” game."
+      "description": "I ate " + settings.global.score + " carrots of wine in Vulture's retro “Parks and Recreation” game."
     }, function(response){});
 
     // Omniture custom tracking
@@ -46,15 +46,15 @@ var _GAMEOVER = {
 
   "shareToTwitter": function() {
     // try to launch native app
-    if (/\/m\//.test(window.location.href)) {
-      window.location.href = "twitter://post?message=" + encodeURIComponent("I drank " + settings.global.score +
-        " glasses of wine in @Vulture's @GameofThrones #retrograme! #BeatThat " + window.location.href);
+    if (settings.global.mobile) {
+      window.location.href = "twitter://post?message=" + encodeURIComponent("I ate " + settings.global.score +
+        " carrots in @Vulture's @parksandrecnbc #retrograme! #BeatThat " + window.location.href);
     }
     // otherwise, do it the standard way
     setTimeout(function() {
       window.open("http://twitter.com/intent/tweet" +
-        "?source=tweetbutton&text=" + encodeURIComponent("I drank " + settings.global.score +
-        " glasses of wine in @Vulture's @GameofThrones #retrograme! #BeatThat") + "+" + encodeURIComponent(window.location.href), "Tweet Your Score",
+        "?source=tweetbutton&text=" + encodeURIComponent("I ate " + settings.global.score +
+        " carrots in @Vulture's @parksandrecnbc #retrograme! #BeatThat") + "+" + encodeURIComponent(window.location.href), "Tweet Your Score",
         "width=600,height=300,left=" + Math.ceil((window.innerWidth / 2) - 300) + ",top=" + Math.ceil((window.innerHeight / 2) - 127));
     }, 100);
 
@@ -65,8 +65,8 @@ var _GAMEOVER = {
   },
 
   "restartGame": function() {
-    console.log("_trackEvent", "Vulture, Video Game", "Game of Thrones", "Restart Game, Key");
-    // _gaq.push(["_trackEvent", "Vulture, Video Game", "Game of Thrones", "Restart Game, Key"]);
+    console.log("send", "event", "Vulture, Video Game", "Lil Sebastian", "Restart Game, Key");
+    // ga("send", "event", "Vulture, Video Game", "Lil Sebastian", "Restart Game, Key");
     // stop all the timer loops from generating new objects
     game.time.reset();
     game.state.start("main");
@@ -81,22 +81,22 @@ var _GAMEOVER = {
   },
 
   "preload": function() {
-    this.finalScore = game.add.text(game.world.centerX, 65, "SCORE " + settings.global.score, this.bigText);
+    this.finalScore = game.add.text(game.world.centerX, 35, "SCORE " + settings.global.score, this.bigText);
     this.finalScore.anchor.setTo(0.5, 0.5);
     this.finalScore.alpha = 0;
 
-    this.shareScore = game.add.text(game.world.centerX, 140, "SHARE YOUR SCORE:", this.mediumText);
+    this.shareScore = game.add.text(game.world.centerX, 70, "SHARE YOUR SCORE:", this.mediumText);
     this.shareScore.anchor.setTo(0.5, 0.5);
     this.shareScore.alpha = 0;
-    this.facebook = game.add.button(40, 160, "facebook", this.shareToFacebook, this);
+    this.facebook = game.add.button(40, 90, "facebook", this.shareToFacebook, this);
     this.facebook.alpha = 0;
-    this.twitter = game.add.button(220, 160, "twitter", this.shareToTwitter, this);
+    this.twitter = game.add.button(340, 90, "twitter", this.shareToTwitter, this);
     this.twitter.alpha = 0;
 
-    this.gameOver = game.add.text(game.world.centerX, game.world.centerY - 10, "GAME OVER", this.bigText);
+    this.gameOver = game.add.text(game.world.centerX, game.world.centerY + 10, "GAME OVER", this.bigText);
     this.gameOver.anchor.setTo(0.5, 0.5);
     this.gameOver.alpha = 0;
-    this.subtext = game.add.text(game.world.centerX, game.world.centerY + 40, "“IT’S NOT EASY BEING DRUNK\nALL THE TIME. IF IT WERE EASY,\nEVERYONE WOULD DO IT.”", this.smallText);
+    this.subtext = game.add.text(165, game.world.centerY + 50, "R.I.P. Li'l Sebastian", this.smallText);
     this.subtext.anchor.setTo(0.5, 0.5);
     this.subtext.alpha = 0;
 
@@ -104,7 +104,7 @@ var _GAMEOVER = {
       this.tryAgain = game.add.text(game.world.centerX, game.world.height - 65, "TRY AGAIN", this.mediumText);
     }
     else {
-      this.tryAgain = game.add.sprite(game.world.centerX, game.world.height - 65, "tryAgain");
+      this.tryAgain = game.add.sprite(160, game.world.height - 65, "tryAgain");
     }
     this.tryAgain.anchor.setTo(0.5, 0.5);
     this.tryAgain.alpha = 0;
@@ -114,8 +114,8 @@ var _GAMEOVER = {
     // reset player location, if modified
     settings.player.tutorial.modified = false;
     
-    this.sebastian = game.add.sprite(game.world.centerX - 72, game.world.Y - 97, "dead");
-    game.add.tween(this.sebastian).to({"y": 405}, 2000, Phaser.Easing.Bounce.Out, true, 0, 0, false);
+    this.sebastian = game.add.sprite(game.world.width - 70, game.world.Y - 95, "sebastian");
+    game.add.tween(this.sebastian).to({"angle": 180}, 10).to({"y": game.world.height - 30}, 2000, Phaser.Easing.Bounce.Out, true, 0, 0, false);
 
     game.add.tween(this.finalScore).to({"alpha": 1}, 500, Phaser.Easing.Linear.None, true, 1000, 0, false);
 

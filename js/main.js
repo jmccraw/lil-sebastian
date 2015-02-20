@@ -68,7 +68,6 @@ var _MAIN = {
     else {
       score = 100;
     }
-    console.log("SCORE", score, "getCount", settings.global.getCount);
     collectible.destroy();
     settings.global.score += score;
     scoreboard.text = "SCORE: " + settings.global.score;
@@ -88,22 +87,19 @@ var _MAIN = {
   "killPlayer": function(player, dodge) {
     // stop all the timer loops from generating new objects
     game.time.removeAll();
-    var blood = game.add.emitter(player.x + (player.width / 2), dodge.y, 200);
-    blood.makeParticles("blood");
-    blood.start(false, 800, 30);
-    player.body.velocity.x = 0;
+    player.body.velocity.y = 0;
+    player.body.gravity.y = 0;
     player.animations.stop();
+    player.anchor.set(.5, 1);
+    game.add.tween(player).to({"angle": 180, "x": player.x + 50}, 200).start();
     collectibles.setAll("body.velocity.x", 0);
     dodges.setAll("body.velocity.x", 0);
-    //bonuses.setAll("body.velocity.x", 0);
-    //bonuses.forEach(function(self) {
-    //  self.animations.stop();
-    //});
+    bonuses.setAll("body.velocity.x", 0);
     game.tweens.pauseAll();
     settings.player.killed = true;
     setTimeout(function() {
       game.state.start("gameover");
-    }, 2500);
+    }, 1500);
   },
 
   "jump": function() {
@@ -141,36 +137,41 @@ var _MAIN = {
     }
   },
 
+  "getBounceEasing": function(v) {
+    return Math.sin(v * Math.PI) * 1;
+  },
+
   "createCollectible": function() {
-    var collectible = collectibles.create(game.world.width, game.rnd.integerInRange(0, game.world.height - 90), "collect");
+    var collectible = collectibles.create(game.world.width, game.rnd.integerInRange(10, game.world.height - 58), "collect");
     var dodgeAngle = Math.ceil(Math.random() * 10) % 2 === 0;
     collectible.outOfBoundsKill = true;
     collectible.body.velocity.x = -1 * (settings.collectible.speed + settings.collectible.offset);
     collectible.body.gravity.y = 0;
-    collectible.scale.setTo(.75, .75);
     collectible.anchor.set(.5,.5);
     game.add.tween(collectible).to({"angle": dodgeAngle ? 10 : -10}, 1000).to({"angle": dodgeAngle ? -10 : 10}, 1000).to({"angle": 0}, 1000).loop().start();
   },
 
   "createDodge": function() {
-    var dodge = dodges.create(game.world.width, game.rnd.integerInRange(0, game.world.height - 100), "dodge");
+    var dodge = dodges.create(game.world.width, game.rnd.integerInRange(10, game.world.height - 83), "dodge");
     var dodgeAngle = Math.ceil(Math.random() * 10) % 2 === 0;
     dodge.outOfBoundsKill = true;
     dodge.body.velocity.x = -1 * (settings.dodge.speed + settings.dodge.offset);
     dodge.body.gravity.y = 0;
-    dodge.scale.setTo(.75, .75);
-    dodge.body.setSize(dodge.width - 4, dodge.height - 25, 2, 25);
-    game.add.tween(dodge).to({"angle": dodgeAngle ? -5 : 5}, 1000).to({"angle": dodgeAngle ? 5 : -5}, 1000).to({"angle": 0}, 1000).loop().start();
+    dodge.body.setSize(dodge.width - 20, dodge.height - 25, 10, 25);
+    game.add.tween(dodge).to({"angle": dodgeAngle ? -5 : 5}, 1000)
+      .to({"angle": dodgeAngle ? 5 : -5}, 1000)
+      .to({"angle": 0}, 1000).loop().start();
   },
 
   "createBonus": function() {
-    var chalice = bonuses.create(game.world.width, game.rnd.integerInRange(0, game.world.height - 40), "bonus");
+    var chalice = bonuses.create(game.world.width, game.rnd.integerInRange(40, game.world.height - 90), "bonus");
+    var bounce = game.add.tween(chalice);
     chalice.outOfBoundsKill = true;
     chalice.body.velocity.x = -1 * (settings.bonus.speed + settings.bonus.offset);
     chalice.body.gravity.y = 0;
     chalice.anchor.setTo(.5, .5);
-    chalice.animations.add("bubble");
-    chalice.animations.play("bubble", 5, true);
+    bounce.to({"y": chalice.y - 20}, 750, this.getBounceEasing, true, 0, Number.MAX_VALUE, 0)
+      .to({"y": chalice.y + 40}, 1500, this.getBounceEasing, true, 0, Number.MAX_VALUE, 0);
   },
 
   "preload": function() {
@@ -247,7 +248,7 @@ var _MAIN = {
       ++settings.bonus.offset;
     }, this);
     // create the bonus
-    game.time.events.loop(3000 - (settings.bonus.offset / 2), function() {
+    game.time.events.loop(10000 - (settings.bonus.offset / 2), function() {
       this.createBonus();
     }, this);
   },
@@ -307,15 +308,6 @@ var _MAIN = {
       game.physics.arcade.overlap(player, collectibles, this.addCollectible, null, this);
       game.physics.arcade.overlap(player, dodges, this.killPlayer, null, this);
       game.physics.arcade.overlap(player, bonuses, this.collectBonus, null, this);
-
-      //// clean up objects that fall off screen
-      //if (settings.sign.initiated) {
-      //  collectibles.forEach(function (collectible) {
-      //    if (collectible.x < 0) {
-      //      collectible.destroy();
-      //    }
-      //  });
-      //}
 
       background.tilePosition.x -= 7;
       if (sign.x < game.world.width / 4 && !settings.sign.initiated) {
