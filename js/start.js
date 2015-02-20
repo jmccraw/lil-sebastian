@@ -11,11 +11,14 @@ var _START = {
   },
 
   "create": function() {
+    var startScreen;
     if (!settings.global.mobile) {
-      game.add.sprite(0, 0, "startScreen");
+      startScreen = game.add.sprite(0, 0, "startScreen");
     }
     else {
-      game.add.sprite(0, 0, "startScreenMobile");
+      startScreen = game.add.sprite(0, 0, "startScreenMobile");
+      startScreen.anchor.setTo(.01, -.28);
+      startScreen.scale.setTo(.5, .5);
     }
 
     var key = game.input.keyboard.createCursorKeys();
