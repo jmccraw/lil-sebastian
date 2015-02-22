@@ -710,9 +710,13 @@
     var launchTheGame = function() {
       var theGame = document.getElementById("phaser-screen");
       theGame.style.display = "block";
-      setTimeout(function() {
+      var count = 0;
+      var keepStationary = setInterval(function() {
+        if (++count > 50) {
+          clearInterval(keepStationary);
+        }
         window.scrollTo(0, document.getElementById("phaser-mobile-tap").offsetTop + 240);
-      }, 500);
+      }, 100);
     };
 
     // set up the Phaser game instance
