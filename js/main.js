@@ -68,6 +68,8 @@
       scoreboard.text = "SCORE: " + settings.global.score;
       this.popUpText("+1000", true, true);
       this.generateHappyPee(player);
+      console.log("send", "event", "Vulture, Video Game", "Lil Sebastian", "Collect Bonus");
+      // ga("send", "event", "Vulture, Video Game", "Lil Sebastian", "Collect Bonus");
     },
 
     "killPlayer": function(player, dodge) {
@@ -76,6 +78,8 @@
       player.body.velocity.y = 0;
       player.body.gravity.y = 0;
       player.animations.stop();
+      player.anchor.set(.5, 1);
+      game.add.tween(player).to({"angle": 180, "x": player.x + 50}, 200).start();
       collectibles.setAll("body.velocity.x", 0);
       dodges.setAll("body.velocity.x", 0);
       bonuses.setAll("body.velocity.x", 0);
@@ -251,7 +255,7 @@
       player.body.bounce.y = .2;
       player.body.gravity.y = 600;
       player.body.collideWorldBounds = true;
-      player.body.setSize(player.width, player.height, 0, 0);
+      player.body.setSize(79, 51, 0, 29);
     },
 
     "initWelcomeSign": function() {
@@ -299,7 +303,7 @@
         game.physics.arcade.overlap(player, dodges, this.killPlayer, null, this);
         game.physics.arcade.overlap(player, bonuses, this.collectBonus, null, this);
 
-        background.tilePosition.x -= 7;
+        background.tilePosition.x -= 3;
         if (sign.x < game.world.width / 4 && !settings.sign.initiated) {
           settings.sign.initiated = true;
 

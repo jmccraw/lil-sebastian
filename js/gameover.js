@@ -32,7 +32,7 @@
       FB.ui({
         "method": "feed",
         "link": window.location.href,
-        "picture": "http://pixel.nymag.com/content/dam/daily/vulture/2014/05/15/15-game-of-thrones.jpg",
+        "picture": "http://pixel.nymag.com/imgs/daily/vulture/2015/02/20/20-lil-sebastian-game.nocrop.w1200.h900.2x.jpg",
         "name": "“Parks and Recreation” The Li'l Sebastian Retro Game",
         "caption": " ",
         "description": "I scored " + settings.global.score + " points in Vulture's retro “Parks and Recreation” game."
@@ -124,12 +124,18 @@
     "create": function() {
       // reset player location, if modified
       if (!settings.global.mobile) {
-        this.sebastian = game.add.sprite(game.world.width - 130, -100, "sebastian");
-        game.add.tween(this.sebastian).to({"y": game.world.height - 120}, 2000, Phaser.Easing.Bounce.Out, true, 0, 0, false);
+//          this.sebastian = game.add.sprite(game.world.width - 130, -100, "sebastian");
+//          game.add.tween(this.sebastian).to({"y": game.world.height - 120}, 2000, Phaser.Easing.Bounce.Out, true, 0, 0, false);
+
+        this.sebastian = game.add.sprite(game.world.width - 70, game.world.Y - 95, "sebastian");
+        game.add.tween(this.sebastian).to({"angle": 180}, 10).to({"y": game.world.height - 30}, 2000, Phaser.Easing.Bounce.Out, true, 0, 0, false);
       }
       else {
-        this.sebastian = game.add.sprite(game.world.centerX - 39, -100, "sebastian");
-        game.add.tween(this.sebastian).to({"y": game.world.height * .654}, 2000, Phaser.Easing.Bounce.Out, true, 0, 0, false);
+        //this.sebastian = game.add.sprite(game.world.centerX - 39, -100, "sebastian");
+        //game.add.tween(this.sebastian).to({"y": game.world.height * .654}, 2000, Phaser.Easing.Bounce.Out, true, 0, 0, false);
+
+        this.sebastian = game.add.sprite(game.world.centerX + 39, game.world.Y - 95, "sebastian");
+        game.add.tween(this.sebastian).to({"angle": 180}, 10).to({"y": game.world.height * .835}, 2000, Phaser.Easing.Bounce.Out, true, 0, 0, false);
       }
 
       game.add.tween(this.finalScore).to({"alpha": 1}, 500, Phaser.Easing.Linear.None, true, 1000, 0, false);
