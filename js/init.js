@@ -47,9 +47,13 @@
   var launchTheGame = function() {
     var theGame = document.getElementById("phaser-screen");
     theGame.style.display = "block";
-    setTimeout(function() {
+    var count = 0;
+    var keepStationary = setInterval(function() {
+      if (++count > 50) {
+        clearInterval(keepStationary);
+      }
       window.scrollTo(0, document.getElementById("phaser-mobile-tap").offsetTop + 240);
-    }, 500);
+    }, 100);
   };
 
   // set up the Phaser game instance
@@ -59,22 +63,8 @@
     gameLauncher.addEventListener("click", launchTheGame, false);
 
     settings.global.mobile = true;
-    // scale to height, but if height would make width too large, base it on width instead
-    /*if ((window.innerHeight * (game.width / game.height) > 305) || (window.innerHeight >= 600)) {
-     game.scale.maxWidth = 305;
-     game.scale.maxHeight = game.scale.maxWidth * (game.height / game.width);
-     }
-     // else, scaled based on height
-     else {
-     game.scale.maxHeight = window.innerHeight;
-     game.scale.maxWidth = game.scale.maxHeight * (game.width / game.height);
-     }*/
-    //game.scale.setSize();
 
     game = new Phaser.Game(Math.ceil(window.innerWidth) - 20, Math.ceil(window.innerHeight) - 50, Phaser.AUTO, "phaser-screen");
-    //game.scale.maxWidth = window.innerWidth - 20;
-    //game.scale.maxHeight = window.innerHeight;
-    //game.scale.setSize();
 
     console.log("send", "event", "Vulture, Video Game", "Lil Sebastian", "Mobile");
     // ga("send", "event", "Vulture, Video Game", "Lil Sebastian", "Mobile");

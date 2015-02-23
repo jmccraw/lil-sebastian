@@ -33,20 +33,6 @@
       tempTween.onComplete.add(function() {
         tempLabel.destroy();
       });
-      //++settings.global.getCount;
-      //// display the hiccup after every fifth drink/bonus caught
-      //if ((settings.global.getCount === 5) && !bonus) {
-      //  settings.global.getCount = 0;
-      //  /*var tempSprite;
-      //  var tempTween2;
-      //  tempSprite = game.add.sprite(player.x - 30, player.y + 25, "hiccupAlt");
-      //  tempSprite.anchor.setTo(.5, .5);
-      //  tempTween2 = game.add.tween(tempSprite).to({"y": tempSprite.y - 15}, 300, Phaser.Easing.Linear.None, true, 0, 0, false)
-      //    .to({"alpha": 0}, 200, Phaser.Easing.Linear.None, true, 0, 0, false);
-      //  tempTween2.onComplete.add(function() {
-      //    tempSprite.destroy();
-      //  });*/
-      //}
     },
 
     "generateHappyPee": function() {
@@ -227,14 +213,6 @@
       }, this);
       // create the dodge
       this.createDodge();
-      //game.time.events.loop(3500 - (settings.dodge.offset / 2), function() {
-      //  this.createDodge();
-      //}, this);
-      // create second dodge
-      // TODO FIXME Make this better, loop should iterate faster, not this one-time instantiation stuff
-      //game.time.events.loop(2700 - (settings.dodge.offset / 2), function() {
-      //  this.createDodge();
-      //}, this);
       this.makeDodgeLoop(2700);
     },
 

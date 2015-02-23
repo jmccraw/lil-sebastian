@@ -233,20 +233,6 @@
         tempTween.onComplete.add(function() {
           tempLabel.destroy();
         });
-        //++settings.global.getCount;
-        //// display the hiccup after every fifth drink/bonus caught
-        //if ((settings.global.getCount === 5) && !bonus) {
-        //  settings.global.getCount = 0;
-        //  /*var tempSprite;
-        //  var tempTween2;
-        //  tempSprite = game.add.sprite(player.x - 30, player.y + 25, "hiccupAlt");
-        //  tempSprite.anchor.setTo(.5, .5);
-        //  tempTween2 = game.add.tween(tempSprite).to({"y": tempSprite.y - 15}, 300, Phaser.Easing.Linear.None, true, 0, 0, false)
-        //    .to({"alpha": 0}, 200, Phaser.Easing.Linear.None, true, 0, 0, false);
-        //  tempTween2.onComplete.add(function() {
-        //    tempSprite.destroy();
-        //  });*/
-        //}
       },
 
       "generateHappyPee": function() {
@@ -427,14 +413,6 @@
         }, this);
         // create the dodge
         this.createDodge();
-        //game.time.events.loop(3500 - (settings.dodge.offset / 2), function() {
-        //  this.createDodge();
-        //}, this);
-        // create second dodge
-        // TODO FIXME Make this better, loop should iterate faster, not this one-time instantiation stuff
-        //game.time.events.loop(2700 - (settings.dodge.offset / 2), function() {
-        //  this.createDodge();
-        //}, this);
         this.makeDodgeLoop(2700);
       },
 
@@ -726,22 +704,8 @@
       gameLauncher.addEventListener("click", launchTheGame, false);
 
       settings.global.mobile = true;
-      // scale to height, but if height would make width too large, base it on width instead
-      /*if ((window.innerHeight * (game.width / game.height) > 305) || (window.innerHeight >= 600)) {
-       game.scale.maxWidth = 305;
-       game.scale.maxHeight = game.scale.maxWidth * (game.height / game.width);
-       }
-       // else, scaled based on height
-       else {
-       game.scale.maxHeight = window.innerHeight;
-       game.scale.maxWidth = game.scale.maxHeight * (game.width / game.height);
-       }*/
-      //game.scale.setSize();
 
       game = new Phaser.Game(Math.ceil(window.innerWidth) - 20, Math.ceil(window.innerHeight) - 50, Phaser.AUTO, "phaser-screen");
-      //game.scale.maxWidth = window.innerWidth - 20;
-      //game.scale.maxHeight = window.innerHeight;
-      //game.scale.setSize();
 
       console.log("send", "event", "Vulture, Video Game", "Lil Sebastian", "Mobile");
       // ga("send", "event", "Vulture, Video Game", "Lil Sebastian", "Mobile");
