@@ -74,6 +74,27 @@
     document.getElementById("phaser-loading").style.display = "none";
   }
 
+  /**
+   * Counteract the prev-next buttons on the page
+   */
+  function counteractPrevNextButtons() {
+    var prevNext = document.querySelectorAll(".prev-next a");
+    var i;
+    if (prevNext.length > 0) {
+      i = prevNext.length - 1;
+      for (; i >= 0; --i) {
+        prevNext[i].setAttribute("data-href", prevNext[i].href);
+        prevNext[i].href = "";
+        prevNext[i].onclick = function(e) {
+          this.href = this.getAttribute("data-href");
+          this.click();
+        };
+      }
+    }
+  }
+
+  counteractPrevNextButtons();
+
   game.state.add("boot", _BOOT);
   game.state.add("load", _LOAD);
   game.state.add("start", _START);

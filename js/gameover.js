@@ -32,7 +32,7 @@
       FB.ui({
         "method": "feed",
         "link": window.location.href,
-        "picture": "http://pixel.nymag.com/imgs/daily/vulture/2015/02/20/20-lil-sebastian-game.nocrop.w1200.h900.2x.jpg",
+        "picture": "http://pixel.nymag.com/imgs/daily/vulture/2015/02/23/23-lil-sebastain-1.w1200.h630.jpg",
         "name": "“Parks and Recreation” The Li'l Sebastian Retro Game",
         "caption": " ",
         "description": "I scored " + settings.global.score + " points in Vulture's retro “Parks and Recreation” game."
